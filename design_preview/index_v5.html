@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerVoy AI 设计稿预览 v0.2</title>
+  <style>
+    :root {
+      --bg: #fff8f2;
+      --surface: #ffffff;
+      --text: #2f2a26;
+      --sub: #7e7268;
+      --primary: #ff8a3d;
+      --primary-weak: #ffe0cc;
+      --line: #f1dfd1;
+      --shadow: 0 8px 24px rgba(217, 126, 57, 0.12);
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: linear-gradient(180deg, #fff7ef 0%, #fffdfb 100%);
+      color: var(--text);
+    }
+    .topbar {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(255, 250, 245, 0.95);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .brand { font-size: 20px; font-weight: 700; color: #e56f1f; }
+    .top-right { display:flex; align-items:center; gap:12px; }
+    .badge { background: var(--primary-weak); color:#bf5a17; border:1px solid #ffc8a0; border-radius:999px; padding:6px 12px; font-size:12px; font-weight:600; }
+    .avatar { width:34px; height:34px; border-radius:50%; background:linear-gradient(145deg,#ffb27e,#ff8a3d); border:2px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,.1); }
+
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 24px; }
+    .section-title { margin: 12px 0 8px; font-size: 22px; }
+    .desc { color: var(--sub); margin-bottom: 18px; }
+
+    .grid { display:grid; grid-template-columns: repeat(2, minmax(420px, 1fr)); gap:22px; }
+    .screen { background: var(--surface); border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); overflow:hidden; min-height:620px; }
+    .screen-head { padding: 14px 16px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; background:#fffaf5; }
+    .screen-title { font-size:15px; font-weight:700; }
+    .screen-sub { font-size:12px; color:var(--sub); }
+
+    .page { display:grid; grid-template-columns:220px 1fr; min-height:560px; }
+    .sidebar { border-right:1px solid var(--line); padding:14px; background:#fffdfb; }
+    .menu-item { padding:10px 12px; border-radius:10px; margin-bottom:8px; color:#655a50; font-size:14px; }
+    .menu-item.active { background: var(--primary-weak); color:#b85513; font-weight:600; }
+    .content { padding:16px; }
+
+    .tag-note { font-size:12px; color:#8a7a6a; margin-bottom:10px; }
+    .capsule-tags { display:flex; flex-wrap:wrap; gap:10px; }
+    .capsule-tag {
+      padding: 8px 16px;
+      border-radius: 999px;
+      background:#fff2e8; border:1px solid #ffc9a5;
+      display:flex; align-items:center; justify-content:center;
+      text-align:center; font-size:12px; color:#b75a19; line-height:1.3;
+    }
+
+    .pill-row { display:flex; gap:8px; margin-bottom:14px; }
+    .pill { border:1px solid var(--line); border-radius:999px; font-size:12px; color:#6f6258; padding:6px 10px; background:#fff; }
+    .pill.active { background:#fff2e8; color:#bf5a17; border-color:#ffc9a5; }
+
+    .card { border:1px solid var(--line); border-radius:var(--radius); padding:14px; margin-bottom:12px; background:#fff; }
+    .card h4 { margin:0 0 8px; font-size:15px; }
+    .meta { font-size:12px; color:var(--sub); margin-bottom:8px; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .tag { font-size:11px; padding:4px 8px; border-radius:999px; border:1px solid #ffd3b4; background:#fff4ea; color:#bc5b18; }
+
+    .engage { display:flex; gap:14px; margin-top:10px; color:#8a7a6a; font-size:12px; }
+    .engage span { display:inline-flex; align-items:center; gap:5px; }
+
+    .stat { background:#fffaf6; border:1px dashed #ffd0af; border-radius:10px; padding:8px 10px; font-size:12px; color:#7a6a5b; }
+    .cta { background:var(--primary); color:#fff; border:0; border-radius:10px; padding:8px 12px; font-size:12px; cursor:pointer; }
+    .cta-secondary { background:transparent; color:var(--primary); border:1px solid var(--primary); border-radius:10px; padding:8px 12px; font-size:12px; cursor:pointer; }
+
+    .two-col { display:grid; grid-template-columns: 1fr 280px; gap:12px; }
+    .tabs { display:flex; gap:8px; margin-bottom:12px; }
+    .tab { padding:7px 10px; border-radius:999px; border:1px solid var(--line); font-size:12px; color:#7a6a5b; background:#fff; }
+    .tab.active { background:#fff2e8; color:#bf5a17; border-color:#ffc9a5; }
+
+    .profile-header { display:flex; align-items:center; gap:16px; margin-bottom:16px; }
+    .comment-section { margin-top:16px; }
+    .comment { display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; }
+    .comment-body p { margin:4px 0 0; font-size:13px; line-height:1.6; }
+    .post-form { display:flex; flex-direction:column; gap:12px; }
+    .form-input, .form-textarea { border:1px solid var(--line); border-radius:10px; padding:12px; font-size:14px; background:#fff; width:100%; }
+    .form-textarea { min-height:120px; }
+    .form-actions { display:flex; justify-content:space-between; align-items:center; }
+    .income-summary { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+    .income-card { background:#fffaf6; border:1px solid var(--line); border-radius:10px; padding:16px; text-align:center; }
+    .income-value { font-size:24px; font-weight:700; color:var(--primary); }
+    .income-label { font-size:12px; color:var(--sub); margin-top:4px; }
+
+    .filter-section { background:#fffaf6; border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:16px; }
+    .filter-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+    .filter-row:last-child { margin-bottom:0; }
+    .filter-label { font-size:12px; color:var(--sub); width:40px; text-align:right; }
+
+    @media (max-width:1080px) { .grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">CareerVoy AI</div>
+    <div class="top-right">
+      <div class="badge">Web 设计稿 v0.2</div>
+      <div class="avatar" title="用户头像"></div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <h2 class="section-title">CareerVoy AI 主功能设计稿</h2>
+    <div class="desc">根据 v0.2 PRD 文档，完成社区、搞钱、个人中心三大模块核心页面设计。</div>
+
+    <div class="grid">
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">社区</div>
+            <div class="screen-sub">实用信息、情绪共鸣、盈利相关、同城互助</div>
+          </div>
+          <button class="cta">发布帖子</button>
+        </div>
+        <div class="page">
+          <aside class="sidebar">
+            <div class="menu-item active">社区</div>
+            <div class="menu-item">搞钱</div>
+            <div class="menu-item">我的</div>
+            <hr style="border:none;border-top:1px solid var(--line);margin:12px 0;">
+            <div class="tag-note">核心内容分类</div>
+            <div class="capsule-tags">
+              <div class="capsule-tag">实用信息</div>
+              <div class="capsule-tag">情绪共鸣</div>
+              <div class="capsule-tag">盈利相关</div>
+              <div class="capsule-tag">同城互助</div>
+            </div>
+          </aside>
+          <main class="content">
+            <div class="pill-row">
+              <div class="pill active">推荐</div>
+              <div class="pill">最新</div>
+            </div>
+
+            <article class="card">
+              <h4>2026年失业金领取全流程（最新版）</h4>
+              <div class="meta">@王大牛 · 审核专家</div>
+              <p style="font-size:13px;color:#5e534a;line-height:1.6;">很多伙伴不知道今年政策微调了，数字化失业金登记可以直接在小程序完成，不用去线下跑腿。本帖详细梳理了领取额度计算方法和社保代缴政策。</p>
+              <div class="row">
+                <span class="tag">实用信息</span>
+                <span class="tag">失业金流程</span>
+              </div>
+              <div class="engage">
+                <span>♡ 2.4k</span>
+                <span>💬 456</span>
+                <span>🔖 1.1k</span>
+              </div>
+            </article>
+
+            <article class="card">
+              <h4>失业第30天，我学会了和焦虑共处</h4>
+              <div class="meta">@快乐小咸鱼</div>
+              <p style="font-size:13px;color:#5e534a;line-height:1.6;">不要责怪自己，是周期性的问题。今天在公园发呆了两个小时，发现春天真的好美。如果累了就歇歇，看看互助的伙伴们，我们一起慢慢来。</p>
+               <div class="row">
+                <span class="tag">情绪共鸣</span>
+                <span class="tag">#心态日记</span>
+              </div>
+              <div class="engage">
+                <span>♡ 1.8k</span>
+                <span>💬 210</span>
+                <span>🔖 89</span>
+              </div>
+            </article>
+          </main>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">搞钱</div>
+            <div class="screen-sub">首期：淘宝客带货</div>
+          </div>
+        </div>
+        <div class="page">
+          <aside class="sidebar">
+            <div class="menu-item">社区</div>
+            <div class="menu-item active">搞钱</div>
+            <div class="menu-item">我的</div>
+            <hr style="border:none;border-top:1px solid var(--line);margin:12px 0;">
+            <div class="tag-note">搞钱中心</div>
+            <div class="menu-item">选品广场</div>
+            <div class="menu-item">我的推广</div>
+            <div class="menu-item">收益看板</div>
+            <div class="menu-item">新手入门</div>
+          </aside>
+          <main class="content">
+            <div class="filter-section">
+              <div class="filter-row">
+                <div class="filter-label">分类:</div>
+                <div class="pill active">家居</div>
+                <div class="pill active">数码</div>
+                <div class="pill">食品</div>
+                <div class="pill">服饰</div>
+                <div class="pill">美妆</div>
+              </div>
+              <div class="filter-row">
+                <div class="filter-label">排序:</div>
+                <div class="pill active">综合</div>
+                <div class="pill">高佣</div>
+                <div class="pill">高销量</div>
+              </div>
+            </div>
+             <div class="card">
+              <h4>今日带货战报：助农蓝莓，单日佣金 420 元！</h4>
+              <div class="meta">@赚钱队长小明 · 带货推官</div>
+              <p style="font-size:13px;color:#5e534a;line-height:1.6;">其实选品很简单，在鲜活易腐烂的时令水果中，我选择了助农蓝莓，转化率非常高。欢迎伙伴们加入我的带货小组，一起快速变现。</p>
+              <div class="row">
+                <span class="tag">盈利相关</span>
+                 <span class="tag">平台认证战报</span>
+              </div>
+              <div class="engage">
+                <span>♡ 128</span>
+                <span>💬 28</span>
+                <span>🔖 42</span>
+              </div>
+            </div>
+            
+            <div class="card">
+              <h4>夏季轻薄防晒外套（女款）</h4>
+              <div class="meta">券后价 ¥89 · 月销 2.3w</div>
+              <div class="row">
+                <span class="tag">佣金比 18%</span>
+                <span class="tag">预估佣金 ¥16.02/单</span>
+                <span class="tag">平台认证战报 128 条</span>
+              </div>
+              <div class="row" style="margin-top:10px;">
+                <button class="cta">生成推广链接</button>
+                <div class="stat">近7日转化率 4.8%</div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h4>便携榨汁杯（办公室场景）</h4>
+              <div class="meta">券后价 ¥59 · 月销 1.1w</div>
+              <div class="row">
+                <span class="tag">佣金比 22%</span>
+                <span class="tag">预估佣金 ¥12.98/单</span>
+                <span class="tag">平台认证战报 76 条</span>
+              </div>
+              <div class="row" style="margin-top:10px;">
+                <button class="cta">生成推广链接</button>
+                <div class="stat">近7日转化率 5.2%</div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">我的</div>
+            <div class="screen-sub">个人主页</div>
+          </div>
+        </div>
+        <div class="page">
+          <aside class="sidebar">
+            <div class="menu-item">社区</div>
+            <div class="menu-item">搞钱</div>
+            <div class="menu-item active">我的</div>
+          </aside>
+          <main class="content">
+            <div class="profile-header">
+              <div class="avatar" style="width:64px; height:64px;"></div>
+              <div class="profile-info">
+                <div style="display:flex; align-items:center; gap:10px;">
+                  <h3 style="margin:0;">快乐小咸鱼</h3>
+                  <span class="tag">LV.3 摸鱼大师</span>
+                </div>
+                <p style="font-size:13px; color:var(--sub); margin:4px 0 0;">IP属地：上海</p>
+              </div>
+              <button class="cta" style="margin-left:auto;">编辑资料</button>
+            </div>
+            <div class="tabs">
+              <div class="tab active">我的帖子</div>
+              <div class="tab">我的收藏</div>
+              <div class="tab">我的关注</div>
+            </div>
+            <div class="card">
+              <h4>失业第30天，我学会了和焦虑共处</h4>
+              <div class="meta">2小时前发布</div>
+              <p style="font-size:13px;color:#5e534a;line-height:1.6;">不要责怪自己，是周期性的问题。今天在公园发呆了两个小时，发现春天真的好美。如果累了就歇歇，看看互助的伙伴们，我们一起慢慢来。</p>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">帖子详情</div>
+            <div class="screen-sub">带评论区</div>
+          </div>
+        </div>
+        <div class="content" style="padding: 16px;">
+          <article class="card">
+            <h4>2026年失业金领取全流程（最新版）</h4>
+            <div class="meta">@王大牛 · 审核专家</div>
+            <p style="font-size:13px;color:#5e534a;line-height:1.6;">很多伙伴不知道今年政策微调了，数字化失业金登记可以直接在小程序完成，不用去线下跑腿。本帖详细梳理了领取额度计算方法和社保代缴政策。</p>
+            <div class="row">
+              <span class="tag">实用信息</span>
+              <span class="tag">失业金流程</span>
+            </div>
+            <div class="engage">
+              <span>♡ 2.4k</span>
+              <span>💬 456</span>
+              <span>🔖 1.1k</span>
+            </div>
+          </article>
+          <div class="comment-section">
+            <h4 style="margin: 16px 0 8px;">热门评论</h4>
+            <div class="comment">
+              <div class="avatar" style="width:28px; height:28px;"></div>
+              <div class="comment-body">
+                <div class="meta">@小明</div>
+                <p>感谢楼主，终于搞明白了，明天就去办！</p>
+              </div>
+            </div>
+            <div class="comment">
+              <div class="avatar" style="width:28px; height:28px;"></div>
+              <div class="comment-body">
+                <div class="meta">@莉莉</div>
+                <p>补充一下，有些地区的线上审核需要人脸识别，大家提前准备好。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">发布新帖子</div>
+            <div class="screen-sub">分享你的经验与见解</div>
+          </div>
+        </div>
+        <div class="content" style="padding:16px;">
+          <div class="post-form">
+            <input type="text" placeholder="输入帖子标题..." class="form-input">
+            <textarea placeholder="分享你的想法..." class="form-textarea"></textarea>
+            <div class="form-actions">
+              <div class="row">
+                <span class="tag">添加标签</span>
+                <button class="cta-secondary">上传图片</button>
+              </div>
+              <button class="cta">发布</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">收益看板</div>
+            <div class="screen-sub">我的带货收入</div>
+          </div>
+        </div>
+        <div class="content" style="padding:16px;">
+          <div class="income-summary">
+            <div class="income-card">
+              <div class="income-value">¥ 1,280.50</div>
+              <div class="income-label">本月预估收益</div>
+            </div>
+            <div class="income-card">
+              <div class="income-value">¥ 850.00</div>
+              <div class="income-label">上月结算收益</div>
+            </div>
+          </div>
+          <div class="tabs">
+            <div class="tab active">收益明细</div>
+            <div class="tab">提现记录</div>
+          </div>
+          <div class="card">
+            <div class="row">
+              <span>夏季轻薄防晒外套</span>
+              <span style="margin-left:auto; font-weight:bold;">+ ¥16.02</span>
+            </div>
+            <div class="meta">2026-05-07 10:30</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">我的推广</div>
+            <div class="screen-sub">我的推广商品列表</div>
+          </div>
+        </div>
+        <div class="page">
+          <aside class="sidebar">
+            <div class="menu-item">社区</div>
+            <div class="menu-item active">搞钱</div>
+            <div class="menu-item">我的</div>
+            <hr style="border:none;border-top:1px solid var(--line);margin:12px 0;">
+            <div class="tag-note">搞钱中心</div>
+            <div class="menu-item">选品广场</div>
+            <div class="menu-item active">我的推广</div>
+            <div class="menu-item">收益看板</div>
+            <div class="menu-item">新手入门</div>
+          </aside>
+          <main class="content">
+            <div class="card">
+              <h4>夏季轻薄防晒外套（女款）</h4>
+              <div class="row" style="margin-top:10px;">
+                <button class="cta">复制推广链接</button>
+                <div class="stat">引流 1,288 | 成单 62 | 预估佣金 ¥993.24</div>
+              </div>
+            </div>
+            <div class="card">
+              <h4>便携榨汁杯（办公室场景）</h4>
+              <div class="row" style="margin-top:10px;">
+                <button class="cta">复制推广链接</button>
+                <div class="stat">引流 890 | 成单 45 | 预估佣金 ¥584.10</div>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+
+      <div class="screen">
+        <div class="screen-head">
+          <div>
+            <div class="screen-title">新手入门</div>
+            <div class="screen-sub">从入门到精通</div>
+          </div>
+        </div>
+        <div class="page">
+          <aside class="sidebar">
+            <div class="menu-item">社区</div>
+            <div class="menu-item active">搞钱</div>
+            <div class="menu-item">我的</div>
+            <hr style="border:none;border-top:1px solid var(--line);margin:12px 0;">
+            <div class="tag-note">搞钱中心</div>
+            <div class="menu-item">选品广场</div>
+            <div class="menu-item">我的推广</div>
+            <div class="menu-item">收益看板</div>
+            <div class="menu-item active">新手入门</div>
+          </aside>
+          <main class="content">
+            <div class="card">
+              <h4>平台规则</h4>
+              <p style="font-size:13px;color:#5e534a;line-height:1.6;">了解平台的带货、结算、社区规范。</p>
+            </div>
+            <div class="card">
+              <h4>操作指南</h4>
+              <p style="font-size:13px;color:#5e534a;line-height:1.6;">"第一步做什么、第二步做什么"的流程教学。</p>
+            </div>
+            <div class="card">
+              <h4>常见问题（FAQ）</h4>
+              <p style="font-size:13px;color:#5e534a;line-height:1.6;">例如"佣金怎么算？""提现多久到账？"等。</p>
+            </div>
+          </main>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
