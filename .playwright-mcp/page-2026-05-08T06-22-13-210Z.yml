@@ -1,0 +1,47 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: CareerVoy AI
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]: 🔍 搜索内容或商品
+      - generic [ref=e7] [cursor=pointer]: 🔔
+      - generic "用户头像" [ref=e9] [cursor=pointer]
+  - generic [ref=e11]:
+    - generic [ref=e13]: 搞钱 · 选品广场
+    - generic [ref=e14]:
+      - complementary [ref=e15]:
+        - generic [ref=e16] [cursor=pointer]: 社区
+        - generic [ref=e17] [cursor=pointer]: 搞钱
+        - generic [ref=e18] [cursor=pointer]: 消息
+        - generic [ref=e19] [cursor=pointer]: 我的
+        - separator [ref=e20]
+        - generic [ref=e21]: 搞钱中心
+        - generic [ref=e22] [cursor=pointer]: 选品广场
+        - generic [ref=e23] [cursor=pointer]: 我的推广
+        - generic [ref=e24] [cursor=pointer]: 收益看板
+        - generic [ref=e25] [cursor=pointer]: 新手入门
+      - main [ref=e26]:
+        - generic [ref=e27]:
+          - generic [ref=e28]: 🔍
+          - textbox "搜索商品名称、品类..." [ref=e29]
+        - generic [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]: "分类:"
+            - generic [ref=e33] [cursor=pointer]: 全部
+            - generic [ref=e34] [cursor=pointer]: 家居
+            - generic [ref=e35] [cursor=pointer]: 数码
+            - generic [ref=e36] [cursor=pointer]: 食品
+            - generic [ref=e37] [cursor=pointer]: 美妆
+          - generic [ref=e38]:
+            - generic [ref=e39]: "排序:"
+            - generic [ref=e40] [cursor=pointer]: 综合
+            - generic [ref=e41] [cursor=pointer]: 高佣
+            - generic [ref=e42] [cursor=pointer]: 高销量
+        - generic [ref=e43]:
+          - heading "夏季轻薄防晒外套（女款）" [level=4] [ref=e44]
+          - generic [ref=e45]: 券后价 ¥89 · 月销 2.3w
+          - generic [ref=e46]:
+            - generic [ref=e47]: 佣金比 18%
+            - generic [ref=e48]: 预估佣金 ¥16.02/单
+          - generic [ref=e49]:
+            - button "生成推广链接" [ref=e50] [cursor=pointer]
+            - generic [ref=e51] [cursor=pointer]: 查看详情 →

@@ -1,0 +1,47 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: CareerVoy AI
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]: 🔍 搜索内容或商品
+      - generic [ref=e7] [cursor=pointer]: 🔔
+      - generic "用户头像" [ref=e9] [cursor=pointer]
+  - generic [ref=e112]:
+    - generic [ref=e114]: 我的
+    - generic [ref=e115]:
+      - complementary [ref=e116]:
+        - generic [ref=e117] [cursor=pointer]: 社区
+        - generic [ref=e118] [cursor=pointer]: 搞钱
+        - generic [ref=e119] [cursor=pointer]: 消息
+        - generic [ref=e120] [cursor=pointer]: 我的
+        - separator [ref=e121]
+        - generic [ref=e122]: 快捷入口
+        - generic [ref=e123] [cursor=pointer]: 💰 带货收入
+        - generic [ref=e124] [cursor=pointer]: 💬 消息中心
+        - generic [ref=e125] [cursor=pointer]: ⚙️ 个人设置
+      - main [ref=e126]:
+        - generic [ref=e127]:
+          - generic [ref=e129]:
+            - generic [ref=e130]:
+              - heading "快乐小咸鱼" [level=3] [ref=e131]
+              - generic [ref=e132]: LV.3 摸鱼大师
+            - paragraph [ref=e133]: IP属地：上海
+          - button "编辑资料" [ref=e134] [cursor=pointer]
+        - generic [ref=e135]: 失业不可怕，我们一起慢慢来~ 专注副业探索，分享搞钱心得。
+        - generic [ref=e136]:
+          - generic [ref=e137]:
+            - generic [ref=e138]: "128"
+            - generic [ref=e139]: 关注
+          - generic [ref=e140]:
+            - generic [ref=e141]: 2.3k
+            - generic [ref=e142]: 粉丝
+          - generic [ref=e143]:
+            - generic [ref=e144]: "56"
+            - generic [ref=e145]: 获赞
+        - generic [ref=e146]:
+          - generic [ref=e147] [cursor=pointer]: 我的帖子
+          - generic [ref=e148] [cursor=pointer]: 我的收藏
+          - generic [ref=e149] [cursor=pointer]: 我的关注
+        - generic [ref=e150]:
+          - heading "失业第30天，我学会了和焦虑共处" [level=4] [ref=e151]
+          - generic [ref=e152]: 2小时前发布
+          - paragraph [ref=e153]: 不要责怪自己，是周期性的问题。今天在公园发呆了两个小时，发现春天真的好美。

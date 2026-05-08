@@ -1,0 +1,67 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: CareerVoy AI
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]: 🔍 搜索内容或商品
+      - generic [ref=e7] [cursor=pointer]: 🔔
+      - generic "用户头像" [ref=e9] [cursor=pointer]
+  - generic [ref=e52]:
+    - generic [ref=e53]:
+      - generic [ref=e54]:
+        - generic [ref=e55]: 社区 · 推荐
+        - generic [ref=e56]: 今天有什么新动态？
+      - button "发布帖子" [ref=e57] [cursor=pointer]
+    - generic [ref=e58]:
+      - complementary [ref=e59]:
+        - generic [ref=e60] [cursor=pointer]: 社区
+        - generic [ref=e61] [cursor=pointer]: 搞钱
+        - generic [ref=e62] [cursor=pointer]: 消息
+        - generic [ref=e63] [cursor=pointer]: 我的
+        - separator [ref=e64]
+        - generic [ref=e65]: 核心内容分类
+        - generic [ref=e66]:
+          - generic [ref=e67] [cursor=pointer]: 实用信息
+          - generic [ref=e68] [cursor=pointer]: 情绪共鸣
+          - generic [ref=e69] [cursor=pointer]: 盈利相关
+          - generic [ref=e70] [cursor=pointer]: 同城互助
+      - main [ref=e71]:
+        - generic [ref=e72]:
+          - generic [ref=e73]: 🔍
+          - textbox "搜索帖子内容..." [ref=e74]
+        - generic [ref=e75]:
+          - generic [ref=e76] [cursor=pointer]: 推荐
+          - generic [ref=e77] [cursor=pointer]: 最新
+          - generic [ref=e78] [cursor=pointer]: 关注
+        - article [ref=e79]:
+          - heading "Just landed a new ro..." [level=4] [ref=e80]
+          - generic [ref=e81]: "@Alice · 2h ago"
+          - paragraph [ref=e82]: "Just landed a new role as a Product Manager! So excited to start this new journey. Thanks to everyone who supported me. #newbeginnings #productmanagement"
+          - generic [ref=e83]:
+            - generic [ref=e84]: 实用信息
+            - generic [ref=e85]: "#心态日记"
+          - generic [ref=e86]:
+            - generic [ref=e87] [cursor=pointer]: ♡ 56
+            - generic [ref=e88] [cursor=pointer]: 💬 12
+            - generic [ref=e89] [cursor=pointer]: 🔖 6k
+        - article [ref=e90]:
+          - heading "Does anyone have tip..." [level=4] [ref=e91]
+          - generic [ref=e92]: "@Bob · 5h ago"
+          - paragraph [ref=e93]: Does anyone have tips for preparing for a data science interview? I have one coming up next week and would appreciate any advice!
+          - generic [ref=e94]:
+            - generic [ref=e95]: 实用信息
+            - generic [ref=e96]: "#心态日记"
+          - generic [ref=e97]:
+            - generic [ref=e98] [cursor=pointer]: ♡ 102
+            - generic [ref=e99] [cursor=pointer]: 💬 34
+            - generic [ref=e100] [cursor=pointer]: 🔖 17k
+        - article [ref=e101]:
+          - heading "Thinking of starting..." [level=4] [ref=e102]
+          - generic [ref=e103]: "@Charlie · 1d ago"
+          - paragraph [ref=e104]: Thinking of starting a side hustle with affiliate marketing. It seems like a good way to earn some passive income. Has anyone tried it?
+          - generic [ref=e105]:
+            - generic [ref=e106]: 实用信息
+            - generic [ref=e107]: "#心态日记"
+          - generic [ref=e108]:
+            - generic [ref=e109] [cursor=pointer]: ♡ 23
+            - generic [ref=e110] [cursor=pointer]: 💬 8
+            - generic [ref=e111] [cursor=pointer]: 🔖 4k

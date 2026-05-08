@@ -1,0 +1,13 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: CareerVoy AI
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]: 🔍 搜索内容或商品
+      - generic [ref=e7] [cursor=pointer]: 🔔
+      - generic "用户头像" [ref=e9] [cursor=pointer]
+  - generic [ref=e11]:
+    - generic [ref=e12]: CareerVoy AI
+    - generic [ref=e13]: 失业不孤单，副业有方向
+    - button "📱 手机号登录" [ref=e14] [cursor=pointer]
+    - button "💚 微信登录" [ref=e15] [cursor=pointer]
+    - paragraph [ref=e16]: 登录即代表同意《用户协议》和《隐私政策》

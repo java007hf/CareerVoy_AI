@@ -1,0 +1,92 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e4]: CareerVoy AI
+      - generic [ref=e5]:
+        - generic [ref=e6] [cursor=pointer]: 🔍 搜索内容或商品
+        - generic [ref=e7] [cursor=pointer]: 🔔
+        - generic "用户头像" [ref=e9] [cursor=pointer]
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - generic [ref=e14]: 社区 · 推荐
+          - generic [ref=e15]: 今天有什么新动态？
+        - button "发布帖子" [active] [ref=e16] [cursor=pointer]
+      - generic [ref=e17]:
+        - complementary [ref=e18]:
+          - generic [ref=e19] [cursor=pointer]: 社区
+          - generic [ref=e20] [cursor=pointer]: 搞钱
+          - generic [ref=e21] [cursor=pointer]: 消息
+          - generic [ref=e22] [cursor=pointer]: 我的
+          - separator [ref=e23]
+          - generic [ref=e24]: 核心内容分类
+          - generic [ref=e25]:
+            - generic [ref=e26] [cursor=pointer]: 实用信息
+            - generic [ref=e27] [cursor=pointer]: 情绪共鸣
+            - generic [ref=e28] [cursor=pointer]: 盈利相关
+            - generic [ref=e29] [cursor=pointer]: 同城互助
+        - main [ref=e30]:
+          - generic [ref=e31]:
+            - generic [ref=e32]: 🔍
+            - textbox "搜索帖子内容..." [ref=e33]
+          - generic [ref=e34]:
+            - generic [ref=e35] [cursor=pointer]: 推荐
+            - generic [ref=e36] [cursor=pointer]: 最新
+            - generic [ref=e37] [cursor=pointer]: 关注
+          - article [ref=e38]:
+            - heading "Just landed a new ro..." [level=4] [ref=e39]
+            - generic [ref=e40]: "@Alice · 2h ago"
+            - paragraph [ref=e41]: "Just landed a new role as a Product Manager! So excited to start this new journey. Thanks to everyone who supported me. #newbeginnings #productmanagement"
+            - generic [ref=e42]:
+              - generic [ref=e43]: 实用信息
+              - generic [ref=e44]: "#心态日记"
+            - generic [ref=e45]:
+              - generic [ref=e46] [cursor=pointer]: ♡ 56
+              - generic [ref=e47] [cursor=pointer]: 💬 12
+              - generic [ref=e48] [cursor=pointer]: 🔖 6k
+          - article [ref=e49]:
+            - heading "Does anyone have tip..." [level=4] [ref=e50]
+            - generic [ref=e51]: "@Bob · 5h ago"
+            - paragraph [ref=e52]: Does anyone have tips for preparing for a data science interview? I have one coming up next week and would appreciate any advice!
+            - generic [ref=e53]:
+              - generic [ref=e54]: 实用信息
+              - generic [ref=e55]: "#心态日记"
+            - generic [ref=e56]:
+              - generic [ref=e57] [cursor=pointer]: ♡ 102
+              - generic [ref=e58] [cursor=pointer]: 💬 34
+              - generic [ref=e59] [cursor=pointer]: 🔖 17k
+          - article [ref=e60]:
+            - heading "Thinking of starting..." [level=4] [ref=e61]
+            - generic [ref=e62]: "@Charlie · 1d ago"
+            - paragraph [ref=e63]: Thinking of starting a side hustle with affiliate marketing. It seems like a good way to earn some passive income. Has anyone tried it?
+            - generic [ref=e64]:
+              - generic [ref=e65]: 实用信息
+              - generic [ref=e66]: "#心态日记"
+            - generic [ref=e67]:
+              - generic [ref=e68] [cursor=pointer]: ♡ 23
+              - generic [ref=e69] [cursor=pointer]: 💬 8
+              - generic [ref=e70] [cursor=pointer]: 🔖 4k
+  - generic [ref=e72]:
+    - generic [ref=e73]:
+      - heading "发布帖子" [level=3] [ref=e74]
+      - button "✕" [ref=e75] [cursor=pointer]
+    - generic [ref=e76]:
+      - generic [ref=e77]:
+        - generic [ref=e78] [cursor=pointer]: 实用信息
+        - generic [ref=e79] [cursor=pointer]: 情绪共鸣
+        - generic [ref=e80] [cursor=pointer]: 盈利相关
+        - generic [ref=e81] [cursor=pointer]: 同城互助
+      - textbox "添加标题会有更多赞哦~" [ref=e82]
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - button "🖼️" [ref=e85] [cursor=pointer]
+          - button "B" [ref=e86] [cursor=pointer]
+          - button "🔗" [ref=e87] [cursor=pointer]
+          - button "@" [ref=e88] [cursor=pointer]
+        - generic [ref=e89]: 分享你的故事、经验或求助...
+        - generic [ref=e91] [cursor=pointer]: +
+    - generic [ref=e92]:
+      - generic [ref=e94]: 0 / 2000 字
+      - generic [ref=e95]:
+        - button "存草稿" [ref=e96] [cursor=pointer]
+        - button "发布" [ref=e97] [cursor=pointer]

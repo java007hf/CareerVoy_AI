@@ -1,0 +1,17 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - generic [ref=e4]: CareerVoy AI
+    - generic [ref=e5]:
+      - generic [ref=e6] [cursor=pointer]: 🔍 搜索内容或商品
+      - generic [ref=e7] [cursor=pointer]: 🔔
+      - generic "用户头像" [ref=e9] [cursor=pointer]
+  - generic [ref=e71]:
+    - generic [ref=e73]: 搞钱中心
+    - generic [ref=e74]:
+      - complementary [ref=e75]:
+        - generic [ref=e76] [cursor=pointer]: 选品广场
+        - generic [ref=e77] [cursor=pointer]: 我的推广
+        - generic [ref=e78] [cursor=pointer]: 收益看板
+        - generic [ref=e79] [cursor=pointer]: 新手入门
+      - main [ref=e80]:
+        - paragraph [ref=e81]: 选品广场 - 功能开发中
