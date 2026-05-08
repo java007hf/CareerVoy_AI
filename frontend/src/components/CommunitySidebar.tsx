@@ -1,15 +1,25 @@
+import { useNavigate, useLocation } from 'react-router-dom';
+
 export default function CommunitySidebar() {
-  const menuItems = ['社区', '搞钱', '消息', '我的'];
+  const navigate = useNavigate();
+  const location = useLocation();
+  const menuItems = [
+    { name: '社区', path: '/community' },
+    { name: '搞钱', path: '/money' },
+    { name: '消息', path: '/messages' },
+    { name: '我的', path: '/profile' },
+  ];
   const tags = ['实用信息', '情绪共鸣', '盈利相关', '同城互助'];
 
   return (
     <>
-      {menuItems.map((item, index) => (
-        <div 
-          key={item}
-          className={`menu-item ${index === 0 ? 'active' : ''}`}
+      {menuItems.map((item) => (
+        <div
+          key={item.name}
+          className={`menu-item ${location.pathname === item.path ? 'active' : ''}`}
+          onClick={() => navigate(item.path)}
         >
-          {item}
+          {item.name}
         </div>
       ))}
       <hr style={{border: 'none', borderTop: '1px solid var(--line)', margin: '12px 0'}} />
