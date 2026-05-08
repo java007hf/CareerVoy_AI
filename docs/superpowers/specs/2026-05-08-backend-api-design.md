@@ -901,6 +901,10 @@ Authorization: Bearer <token>
 | UNAUTHORIZED | 401 | 未登录或 Token 失效 |
 | FORBIDDEN | 403 | 无权限 |
 | NOT_FOUND | 404 | 资源不存在 |
+| BALANCE_INSUFFICIENT | 400 | 余额不足 |
+| DUPLICATE_REQUEST | 409 | 重复请求（幂等性校验） |
+| WITHDRAW_FROZEN | 403 | 提现金额被冻结中 |
+| AMOUNT_TOO_LARGE | 403 | 金额超限，需人工审核 |
 | SERVER_ERROR | 500 | 服务器内部错误 |
 
 ---
@@ -1043,7 +1047,234 @@ interface CommissionCalculation {
 
 ---
 
-## 9. 后续工作
+## 9. 安全与风控设计
+
+### 9.1 安全风险识别
+
+| 风险类型 | 描述 | 严重程度 |
+|----------|------|----------|
+| 余额篡改 | 黑客直接修改数据库中用户余额 | 高 |
+| 重放攻击 | 多次发送同一提现请求 | 高 |
+| 竞争条件 | 并发请求导致余额扣减不一致 | 高 |
+| 水平越权 | 修改他人账户的余额 | 高 |
+| 幂等性缺失 | 提现请求可被无限重放 | 中 |
+
+### 9.2 安全设计原则
+
+1. **余额不可直接修改** - 余额只能通过资金流水计算得出
+2. **事务原子性** - 所有余额变更必须在事务中完成
+3. **增量操作** - 使用 `$inc` 而非 `$set` 更新余额
+4. **幂等性保证** - 提现申请用唯一 ID，防止重复提交
+5. **服务端验证** - 余额从数据库实时查询，不信任客户端
+
+### 9.3 数据模型
+
+#### Account（用户账户）
+
+```typescript
+interface Account {
+  _id: ObjectId;
+  userId: ObjectId;              // 用户 ID（唯一）
+  balance: number;               // 可用余额（单位：分，避免浮点问题）
+  frozenBalance: number;        // 冻结余额（提现处理中）
+  totalEarned: number;          // 累计收益
+  totalWithdrawn: number;      // 累计已提现
+  version: number;             // 乐观锁版本号
+  createdAt: Date;
+  updatedAt: Date;
+}
+```
+
+#### AccountTransaction（账户流水）
+
+```typescript
+interface AccountTransaction {
+  _id: ObjectId;
+  accountId: ObjectId;          // 账户 ID
+  type: 'commission_in' | 'refund' | 'withdraw_out' | 'fee_out';
+  amount: number;               // 变动金额（正数增加，负数减少）
+  balanceBefore: number;         // 变动前余额
+  balanceAfter: number;         // 变动后余额
+  relatedId?: string;           // 关联订单 ID 或提现记录 ID
+  relatedType?: 'order' | 'withdraw';
+  description: string;          // 变动说明
+  createdAt: Date;
+}
+```
+
+#### WithdrawRecord（提现记录）
+
+```typescript
+interface WithdrawRecord {
+  _id: ObjectId;
+  userId: ObjectId;
+  accountId: ObjectId;
+  amount: number;               // 提现金额
+  fee: number;                  // 手续费（如有）
+  actualAmount: number;        // 实际到账金额
+  status: 'pending' | 'processing' | 'completed' | 'rejected';
+  withdrawIdempotentKey: string;  // 幂等键（防重复提交）
+  bankInfo?: string;            // 银行信息（脱敏）
+  rejectReason?: string;       // 拒绝原因
+  processedAt?: Date;           // 处理时间
+  createdAt: Date;
+}
+```
+
+### 9.4 安全实现示例
+
+#### 余额扣减（安全版）
+
+```typescript
+// ❌ 不安全：先查余额，再扣减（两步之间可能被篡改）
+async function withdrawUnsafe(userId: string, amount: number) {
+  const user = await User.findById(userId);
+  if (user.withdrawable >= amount) {
+    user.withdrawable -= amount;
+    await user.save();
+  }
+}
+
+// ✅ 安全：原子操作 + 条件查询
+async function withdrawSafe(userId: string, amount: number, idempotentKey: string) {
+  const session = await mongoose.startSession();
+
+  // 检查是否已处理（幂等性）
+  const existing = await WithdrawRecord.findOne({ withdrawIdempotentKey, userId });
+  if (existing) {
+    return { status: 'already_processed', record: existing };
+  }
+
+  session.startTransaction();
+  try {
+    // 原子扣减：余额不足时操作失败
+    const result = await Account.findOneAndUpdate(
+      {
+        userId,
+        balance: { $gte: amount }  // 余额必须足够
+      },
+      {
+        $inc: {
+          balance: -amount,
+          frozenBalance: amount
+        },
+        $push: {
+          transactions: {
+            type: 'withdraw_out',
+            amount: -amount,
+            withdrawIdempotentKey,
+            description: '提现冻结'
+          }
+        }
+      },
+      { session, new: true }
+    );
+
+    if (!result) {
+      throw new Error('余额不足或已被其他人提取');
+    }
+
+    // 创建提现记录
+    const record = await WithdrawRecord.create([{
+      userId,
+      accountId: result._id,
+      amount,
+      status: 'pending',
+      withdrawIdempotentKey: idempotentKey
+    }], { session });
+
+    await session.commitTransaction();
+    return { status: 'success', record };
+
+  } catch (e) {
+    await session.abortTransaction();
+    throw e;
+  } finally {
+    session.endSession();
+  }
+}
+```
+
+#### 收益入账（安全版）
+
+```typescript
+async function creditCommission(userId: string, orderId: string, amount: number) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    // 获取当前余额
+    const account = await Account.findOne({ userId });
+    const balanceBefore = account.balance;
+
+    // 计算分成
+    const userShare = Math.floor(amount * 0.85);  // 分（避免浮点）
+    const platformFee = amount - userShare;
+
+    // 原子增加余额
+    await Account.findByIdAndUpdate(account._id, {
+      $inc: {
+        balance: userShare,
+        totalEarned: userShare
+      },
+      $push: {
+        transactions: {
+          type: 'commission_in',
+          amount: userShare,
+          balanceBefore,
+          balanceAfter: balanceBefore + userShare,
+          relatedId: orderId,
+          relatedType: 'order',
+          description: `订单 ${orderId} 佣金收入`
+        }
+      }
+    }, { session });
+
+    // 记录收益
+    await Income.create([{
+      userId,
+      type: 'estimated',
+      amount,
+      userShare,
+      platformFee,
+      orderId,
+      status: 'pending'
+    }], { session });
+
+    await session.commitTransaction();
+
+  } catch (e) {
+    await session.abortTransaction();
+    throw e;
+  } finally {
+    session.endSession();
+  }
+}
+```
+
+### 9.5 风控措施
+
+| 措施 | 说明 |
+|------|------|
+| 乐观锁 | 使用 `version` 字段防止并发篡改 |
+| 事务原子性 | 余额变更必须在事务中完成 |
+| 幂等键 | 提现申请使用唯一 ID，防止重复提交 |
+| 增量操作 | 使用 `$inc` 而非 `$set` |
+| 审计日志 | 所有余额变更记录流水，可追溯 |
+| 大额审核 | > 5000 元需人工审核 |
+| 限流 | 提现接口限流，防止暴力请求 |
+
+### 9.6 提现审核规则
+
+| 金额 | 审核要求 |
+|------|----------|
+| < 1000 元 | 自动放行 |
+| 1000-5000 元 | 短信二次验证 |
+| > 5000 元 | 人工审核 |
+
+---
+
+## 10. 后续工作
 
 1. **实现阶段** - 根据本设计文档实现 API
 2. **测试阶段** - 使用 Postman 或自动化测试验证接口
